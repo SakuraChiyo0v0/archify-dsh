@@ -31,7 +31,7 @@ Use this bounded path for ordinary generation. Do not read the optional Viewer R
 5. For a delivered HTML, `deliver` is the final acceptance command:
 
    ```bash
-   node bin/archify.mjs deliver <type> <candidate.json> <output.html> --quality showcase --json
+   node bin/archify.mjs deliver <type> <candidate.json> <output.html> --quality showcase --open --json
    ```
 
    A non-zero exit can never be described as success. If validation fails, change only the diagnosed `subject`, verify `evidence`, choose from `supportedFixes`, and rerun. Continue focused correction while the objective error count reaches a new minimum. If two consecutive rounds do not improve that best count, stop and report the unresolved diagnostics truthfully.
@@ -83,7 +83,7 @@ Read `references/authoring-contract.md` only when you need field enums, spacing 
 
 ## Delivery
 
-Use `validate` during repair and `deliver` once for final acceptance. Delivery freezes the exact specification bytes into a private same-directory snapshot, renders and checks that snapshot, atomically commits the HTML, and reports SHA-256 plus byte counts for both specification and artifact.
+Use `validate` during repair and `deliver` once for final acceptance. **本 fork 默认在 deliver 成功后自动打开 HTML**：最终命令必须带 `--open`（除非用户明确要求不打开）。Delivery freezes the exact specification bytes into a private same-directory snapshot, renders and checks that snapshot, atomically commits the HTML, and reports SHA-256 plus byte counts for both specification and artifact.
 
 After delivery, collect bounded desktop evidence without modifying or rerendering the trusted HTML:
 
@@ -93,7 +93,7 @@ node bin/archify.mjs visual-check <output.html> --json
 
 `visual-check` measures containment at 1440×900, 1600×1000, 1920×1080, and 2048×1320; captures light/dark screenshots at the smallest and largest sizes; and writes a relative-path contact sheet plus JSON sidecars beside the artifact. Its automated receipt always reports `visualReview: "pending"`: screenshots are evidence for inspection, never an automatic polish claim. Exit 0 means containment and captures passed, 1 means overflow or capture failure, and 2 means Chrome/Chromium was unavailable and the receipt is `skipped`. The command never changes the delivered HTML.
 
-Add `--open` only when the user wants an immediate local preview. For an active desktop authoring loop, the optional command is:
+本 fork 的交付默认会自动打开浏览器；`preview` 也默认自动打开（可用 `--no-open` 关闭）。For an active desktop authoring loop, the optional command is:
 
 ```bash
 node bin/archify.mjs preview <type> <input>.json <output>.html --quality showcase
